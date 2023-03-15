@@ -1,0 +1,389 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "make -C ${input:LoadConfig.msw_relative_path} -j${input:LoadConfig.numOfThreads} all_no_miau",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "c",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": [
+                    {
+                        "regexp": "^\"(.*)\",\\s+line\\s+(\\d+):\\s+(warning|error)\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "severity": 3,
+                        "message": 4
+                    },
+                    {
+                        "regexp": "(.+)",
+                        "message": 1
+                    },
+                    {
+                        "regexp": "(.+)",
+                        "message": 1
+                    },
+                    {
+                        "regexp": "(.+)",
+                        "message": 1
+                    }
+                ]
+            }
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "make -C ${input:LoadConfig.msw_relative_path} clean",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "combined",
+            "type": "shell",
+            "command": "make -C ${input:LoadConfig.msw_relative_path} combined",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build tests",
+            "type": "shell",
+            "command": "make -C ${input:LoadConfig.msw_relative_path} -j${input:LoadConfig.Test.numOfThreads} miau '${input:testModulesConditional}'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}/Test/"
+                ]
+            }
+        },
+        {
+            "label": "generate configurations",
+            "type": "shell",
+            "command": "python .vscode/create_debug_configurations.py",
+        },
+        {
+            "label": "run tests",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build tests",
+                "generate configurations"
+            ]
+        },
+        {
+            "label": "build selected test",
+            "type": "shell",
+            "command": "make -C ${input:LoadConfig.msw_relative_path} -j${input:LoadConfig.Test.numOfThreads} miau '${input:select.testModules}'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}/Test/"
+                ]
+            }
+        },
+        {
+            "label": "run selected test",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build selected test",
+                "generate configurations"
+            ]
+        },
+        {
+            "label": "copy out to remote",
+            "type": "shell",
+            "command": "ECHO 'Copying out to remote'; robocopy ${input:LoadConfig.msw_relative_path}/out ${input:LoadConfig.remote_build_path}/out"
+        },
+        {
+            "label": "build, copy",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build",
+                "combined",
+                "copy out to remote"
+            ]
+        },
+        {
+            "label": "re-build",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "clean",
+                "build"
+            ]
+        },
+        {
+            "label": "build, test, copy",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build",
+                "run tests",
+                "combined",
+                "copy out to remote"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "build, test",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build",
+                "combined",
+                "run tests"
+            ]
+        },
+        {
+            "label": "program board",
+            "type": "shell",
+            "command": ".vscode/programboard.bat '${input:LoadConfig.programmer_path}' ${input:LoadConfig.programmer_configuration_path} ${input:LoadConfig.msw_relative_path}out/${input:LoadConfig.hexName}"
+        },
+        {
+            "label": "build, test, program",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build",
+                "combined",
+                "run tests",
+                "program board"
+            ]
+        },
+        {
+            "label": "build, program",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build",
+                "combined",
+                "program board"
+            ]
+        }
+    ],
+    "inputs": [
+
+        {
+            "id": "LoadConfig.numOfThreads",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.build_inputs.numOfThreads"
+            }
+        },
+
+        {
+            "id": "LoadConfig.Test.numOfThreads",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.test_inputs.numOfThreads"
+            }
+        },
+        
+        {
+            "id": "LoadConfig.hexName",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.general.hex_filename"
+            }
+        },
+
+        {
+            "id": "testModulesConditional",
+            "type": "command",
+            "command": "extension.commandvariable.transform",
+            "args":{
+                "text": "${transform:testModulesWithoutComma}",
+                "find": "TEST_MODULES_LST=Unknown",
+                "replace": "",
+                "transform": {
+                    
+                    "testModulesWithoutComma" : {
+                        "text": "TEST_MODULES_LST=${command:testModules}",
+                        "find": ",",
+                        "replace": " ",
+                        "flags": "g",
+                        "command": {
+                            "testModules": {
+                                "command": "extension.commandvariable.file.content",
+                                "args": {
+                                    "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                                    "json": "content.test_inputs.testModules",
+                                }
+                            }
+                        }
+                    },
+                }
+            }
+        },
+
+        {
+            "id": "testModulesWithoutComma",
+            "type": "command",
+            "command": "extension.commandvariable.transform",
+            "args":{
+                "text": "TEST_MODULES_LST=${command:testModules}",
+                "find": ",",
+                "replace": " ",
+                "command": {
+                    "testModules": {
+                        "command": "extension.commandvariable.file.content",
+                        "args": {
+                            "default": "",
+                            "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                            "json": "content.test_inputs.testModules",
+                        }
+                    }
+                }
+            }
+        },
+
+        {
+            "id": "LoadConfig.Test.testModules",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.test_inputs.testModules",
+            }
+        },
+
+        {
+            "id": "LoadConfig.remote_build_path",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.general.remote_build_path"
+            }
+        },
+        
+        {
+            "id": "LoadConfig.programmer_path",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.general.programmer_path"
+            }
+        },
+
+        {
+            "id": "LoadConfig.programmer_configuration_path",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.general.programmer_configuration_path"
+            }
+        },
+
+        {
+            "id": "LoadConfig.msw_relative_path",
+            "type": "command",
+            "command": "extension.commandvariable.file.content",
+            "args": {
+                "fileName": "${workspaceFolder}/.vscode/project_settings.json",
+                "json": "content.general.msw_relative_path"
+            }
+        },
+
+        {
+            "id": "select.numOfThreads",
+            "command": "extension.commandvariable.promptStringRemember",
+            "type": "command",
+            "args": {
+                "description": "Number of threads used to compile",
+                "key": "numOfThreads",
+                "default": "14",
+            }
+        },
+        {
+            "id": "select.runMIAU",
+            "type": "command",
+            "command": "extension.commandvariable.pickStringRemember",
+            "args": {
+                "key": "runMIAU",
+                "description": "Run MIAU tests",
+                "options": [
+                    ["WITHOUT MIAU", "all_no_miau"], 
+                    ["RUN ALL", "all"], 
+                    ["RUN ONLY MIAU", "miau"],
+                ],
+                "default": "all_no_miau",
+                "checkEscapedUI": true,
+            }
+        },
+        {
+            "id": "select.testModules",
+            "type": "command",
+            "command": "extension.commandvariable.pickStringRemember",
+            "args":
+            {
+                "key": "testModules",
+                "options": [
+                    ["ALL/NONE", ""]
+                ],
+                "fileName": "${workspaceFolder}/Test/Makefile.modules.mk",
+                "pattern": {
+                    "regexp": "^(TEST_MODULES_LST)\\s+\\+=\\s+(.*)$",
+                    "label": "$2",
+                    "value": "$1=$2"
+                },    
+                "description": "Choose which tests have to be run",
+                "checkEscapedUI": false,
+            }
+        },
+
+    ]
+}

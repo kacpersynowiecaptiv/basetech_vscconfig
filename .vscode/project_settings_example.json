@@ -1,0 +1,21 @@
+{
+    "general": 
+    {
+        "workspace_name": "project_name",
+        "gdb_path": "C:\\cygwin64\\bin\\gdb.exe",
+        "remote_build_path": "I:\\project_name\\from_local\\",
+        "programmer_path": "C:\\Program Files (x86)\\Renesas Electronics\\Programming Tools\\Renesas Flash Programmer V3.08\\RFPV3.Console.exe",
+        "programmer_configuration_path": "C:\\RenesansConfiguration\\our_software_board_55.rpj",
+        "hex_filename": "hex_msw.hex",
+        "msw_relative_path": ".\\"
+    },
+    "build_inputs":
+    {
+        "numOfThreads": "14"
+    },
+    "test_inputs":
+    {
+        "numOfThreads": "8",
+        "testModules": [""]
+    }
+}

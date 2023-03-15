@@ -1,0 +1,95 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.dvgroovy": "groovy"
+		},
+		"makefile.loggingLevel": "Verbose",
+		"makefile.additionalCompilerNames": [
+			"C:\\ghs\\comp_201815\\ccrh850.exe",
+			"C:\\cygwin\\bin\\gcc.exe"
+		],
+		"makefile.configurations": [{
+				"name": "All",
+				"makeArgs": ["-j14"],
+				"problemMatchers": [
+					"$gcc"
+				]
+			},
+			{
+				"name": "Test",
+				"makeArgs": ["-j8"],
+				"problemMatchers": [
+					"$gcc"
+				]
+			}
+		],
+		"makefile.launchConfigurations": [{
+			"binaryPath": "${workspaceFolder}\\Test\\out\\bin",
+			"cwd": "${workspaceFolder}",
+			"miDebuggerPath": "C:\\cygwin64\\bin\\gdb.exe",
+			"stopAtEntry": false,
+			"binaryArgs": ["-x"],
+			"symbolSearchPath": ""
+		}
+	],
+	"makefile.makePath": "make",
+	"makefile.makefilePath": "Makefile",
+	"makefile.extensionOutputFolder": ".vscode",
+	"VsCodeTaskButtons.showCounter": true,
+    "VsCodeTaskButtons.tasks": [
+        {
+            "label": "$(notebook-move-down) Build",
+            "task": "build",
+            "tooltip": "🛠️ Start the \"build\" task"
+        },
+        {
+            "label": "$(search-refresh) Re-Build",
+            "task": "re-build",
+            "tooltip": "🧹🛠️ Start the \"re-build\" task"
+        },
+        {
+            "label": "$(notebook-delete-cell) Clean build",
+            "task": "clean",
+            "tooltip": "🧹 Start a \"clean\" task"
+        },
+		{
+            "label": "$(test-view-icon) Test",
+            "task": "run tests",
+            "tooltip": "🧪 Start a \"run test\" task"
+        },
+		{
+            "label": "$(notebook-execute) Program",
+            "task": "program board",
+            "tooltip": "💾 Start a \"program board\" task"
+        },
+		{
+            "label": "$(notebook-execute-all) Build and program",
+            "task": "build, program",
+            "tooltip": "🛠️💾 Start a \"build, program\" task"
+        },
+		{
+            "label": "$(test-view-icon) Test selected test suite",
+            "task": "run selected test",
+            "tooltip": "🧪 Start a \"run selected test\" task"
+        },
+		{
+            "label": "$(explorer-view-icon) Copy to bench",
+            "task": "copy out to remote",
+            "tooltip": "💾 Start a \"copy out to remote\" task"
+        }
+    ]
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.makefile-tools",
+			"spencerwmiles.vscode-task-buttons",
+			"ryuta46.multi-command",
+			"ms-vscode.cpptools"
+		]
+	}
+}
