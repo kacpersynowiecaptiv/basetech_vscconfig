@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make -C ${input:LoadConfig.msw_relative_path} -j${input:LoadConfig.numOfThreads} all_no_miau",
+            "command": "make CFLAGS+=\"--no_wrap_diagnostics\" -C ${input:LoadConfig.msw_relative_path} -j${input:LoadConfig.numOfThreads} all_no_miau",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
@@ -30,16 +30,8 @@
                         "message": 4
                     },
                     {
-                        "regexp": "(.+)",
-                        "message": 1
-                    },
-                    {
-                        "regexp": "(.+)",
-                        "message": 1
-                    },
-                    {
-                        "regexp": "(.+)",
-                        "message": 1
+                        "regexp": "^\\s+(.+)",
+                        "code": 1
                     }
                 ]
             }
@@ -372,8 +364,10 @@
             {
                 "key": "testModules",
                 "options": [
-                    ["ALL/NONE", ""]
+                    ["Run the same test suite", "${remember:testModules}"],
+                    ["ALL", ""]
                 ],
+                "rememberTransformed": true,
                 "fileName": "${workspaceFolder}/Test/Makefile.modules.mk",
                 "pattern": {
                     "regexp": "^(TEST_MODULES_LST)\\s+\\+=\\s+(.*)$",
