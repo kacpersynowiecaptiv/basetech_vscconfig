@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make CFLAGS+=\"--no_wrap_diagnostics\" -C ${input:LoadConfig.msw_relative_path} -j${input:LoadConfig.numOfThreads} all_no_miau",
+            "command": "make -C ${input:LoadConfig.msw_relative_path} -j${input:LoadConfig.numOfThreads} all_no_miau",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
