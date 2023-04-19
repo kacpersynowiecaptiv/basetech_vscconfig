@@ -83,6 +83,21 @@
             }
         },
         {
+            "label": "print test results",
+            "type": "shell",
+            "command": "python Test/print_sum.py Test/out/xml",
+        },
+        {
+            "label": "run tests",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build tests",
+                "generate configurations",
+                "print test results"
+            ]
+        },
+        {
             "label": "generate configurations",
             "type": "shell",
             "command": "python .vscode/create_debug_configurations.py",
@@ -93,7 +108,8 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "build tests",
-                "generate configurations"
+                "generate configurations",
+                "print test results"
             ]
         },
         {
@@ -122,7 +138,8 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                 "build selected test",
-                "generate configurations"
+                "generate configurations",
+                "print test results"
             ]
         },
         {

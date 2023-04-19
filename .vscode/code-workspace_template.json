@@ -43,7 +43,7 @@
 	"VsCodeTaskButtons.showCounter": true,
     "VsCodeTaskButtons.tasks": [
         {
-            "label": "$(notebook-move-down) Build",
+            "label": "$(notebook-execute) Build",
             "task": "build",
             "tooltip": "🛠️ Start the \"build\" task"
         },
@@ -63,7 +63,7 @@
             "tooltip": "🧪 Start a \"run test\" task"
         },
 		{
-            "label": "$(notebook-execute) Program",
+            "label": "$(circuit-board) Program",
             "task": "program board",
             "tooltip": "💾 Start a \"program board\" task"
         },
