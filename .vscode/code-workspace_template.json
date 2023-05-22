@@ -46,7 +46,19 @@
             "label": "$(explorer-view-icon) Copy to bench",
             "task": "copy out to remote",
             "tooltip": "Start a \"copy out to remote\" task"
-        }
+        },
+		{
+			"label": "$(sync) generate compile_comands.json",
+			"task": "generate clangd config",
+			"tooltip": "Start a \"generate compile_comands.json \" task",
+			"alignment": "right"
+		},
+		{
+			"label": "$(arrow-swap) switch to: all_no_miau",
+			"task": "switch clangd config",
+			"tooltip": "Start a \"switching compile_command.json \" task",
+			"alignment": "right"
+		}
     ],
 	"clangd.arguments": [
 		"-log=verbose",

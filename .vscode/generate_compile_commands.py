@@ -12,7 +12,7 @@ with open(f'{file_path}\\project_settings.json') as launch_template:
 parsed_settings = json.loads(settings)
 # %%
 workspace_name = parsed_settings['general']['workspace_name']
-compilation_path = f"{file_path}\\..\\..\\msw\\{parsed_settings['general']['msw_relative_path']}"
+compilation_path = f"{file_path}\\..\\{parsed_settings['general']['msw_relative_path']}"
 real_path = file_path.split('.vscode')[0]
 clangd_tool_path = f'{real_path}..\\clangd_files\\'
 
@@ -57,7 +57,8 @@ with open(f'{clangd_tool_path}compilelog_parsed.log', 'w') as compile_log:
     compile_log.write(text)
 # %%
 call(["compiledb", '--parse', f'{clangd_tool_path}compilelog_parsed.log'])
-call(["mv", 'compile_commands.json', f'{clangd_tool_path}'])
+call(["cp", 'compile_commands.json', f'{clangd_tool_path}'])
+call(["mv", 'compile_commands.json', f'{clangd_tool_path}\\compile_commands_build.json'])
 
 ## UNIT TEST FRAMEWORK
 rep_test = {

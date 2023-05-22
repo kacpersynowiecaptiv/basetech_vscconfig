@@ -88,6 +88,16 @@
             "command": "python Test/print_sum.py Test/out/xml",
         },
         {
+            "label": "generate clangd config",
+            "type": "shell",
+            "command": "python .vscode/generate_compile_commands.py",
+        },
+        {
+            "label": "switch clangd config",
+            "type": "shell",
+            "command": "python .vscode/switch_compile_commands_for_clangd.py ${input:select.clangdinput}"
+        },
+        {
             "label": "run tests",
             "type": "shell",
             "dependsOrder": "sequence",
@@ -367,6 +377,21 @@
                 "options": [
                     ["WITHOUT MIAU", "all_no_miau"], 
                     ["RUN ALL", "all"], 
+                    ["RUN ONLY MIAU", "miau"],
+                ],
+                "default": "all_no_miau",
+                "checkEscapedUI": true,
+            }
+        },
+        {
+            "id": "select.clangdinput",
+            "type": "command",
+            "command": "extension.commandvariable.pickStringRemember",
+            "args": {
+                "key": "runrenaming",
+                "description": "select clangd configuration",
+                "options": [
+                    ["BUILD WITHOUT MIAU", "all_no_miau"], 
                     ["RUN ONLY MIAU", "miau"],
                 ],
                 "default": "all_no_miau",
