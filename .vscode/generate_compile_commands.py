@@ -15,6 +15,7 @@ workspace_name = parsed_settings['general']['workspace_name']
 compilation_path = f"{file_path}\\..\\{parsed_settings['general']['msw_relative_path']}"
 real_path = file_path.split('.vscode')[0]
 clangd_tool_path = f'{real_path}..\\clangd_files\\'
+os.makedirs(os.path.dirname(clangd_tool_path), exist_ok=True)
 
 #%%
 import re

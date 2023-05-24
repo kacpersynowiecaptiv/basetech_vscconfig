@@ -54,7 +54,7 @@
 			"alignment": "right"
 		},
 		{
-			"label": "$(arrow-swap) switch to: all_no_miau",
+			"label": "$(arrow-swap) switch clangd config",
 			"task": "switch clangd config",
 			"tooltip": "Start a \"switching compile_command.json \" task",
 			"alignment": "right"
