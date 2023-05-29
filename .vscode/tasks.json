@@ -89,13 +89,33 @@
         },
         {
             "label": "generate clangd config",
-            "type": "shell",
-            "command": "python .vscode/generate_compile_commands.py",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "run generate clangd config",
+                "reload window"
+            ]
         },
         {
             "label": "switch clangd config",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "rename clangd files",
+                "reload window"
+            ]
+        },
+        {
+            "label": "rename clangd files",
             "type": "shell",
             "command": "python .vscode/switch_compile_commands_for_clangd.py ${input:select.clangdinput}"
+        },
+        {
+            "label": "reload window",
+            "command": "${command:workbench.action.reloadWindow}"
+        },
+        {
+            "label": "run generate clangd config",
+            "type": "shell",
+            "command": "python .vscode/generate_compile_commands.py"
         },
         {
             "label": "run tests",

@@ -64,7 +64,8 @@
 		"-log=verbose",
 		"-pretty",
 		"--background-index",
-		"--compile-commands-dir=..\\clangd_files"
+		"--compile-commands-dir=..\\clangd_files",
+		"--clang-tidy"
 	]
 	},
 	"extensions": {
