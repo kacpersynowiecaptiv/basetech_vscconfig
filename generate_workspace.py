@@ -21,18 +21,22 @@ with open(f'{relative_path}.vscode\\code-workspace_template.json') as vsc_worksp
 
 parsed_vsc_workspace_template_content = json.loads(vsc_workspace_template_content)
 # %%
-with open(f'{relative_path}.vscode\\{workspace_name}.code-workspace') as vsc_workspace:
-    vsc_workspace_content = vsc_workspace.read()
+target_workspace_file = f'{relative_path}.vscode\\{workspace_name}.code-workspace'
 
-parsed_vsc_workspace_content = json.loads(vsc_workspace_content)
+if os.path.isfile(target_workspace_file) is True:
+    with open(target_workspace_file) as vsc_workspace:
+        vsc_workspace_content = vsc_workspace.read()
 
-# %% MERGE
-for setting in parsed_vsc_workspace_template_content['settings']:
-    parsed_vsc_workspace_content['settings'][setting] = parsed_vsc_workspace_template_content['settings'][setting]
+    parsed_vsc_workspace_content = json.loads(vsc_workspace_content)
 
-parsed_vsc_workspace_content['extensions'] = parsed_vsc_workspace_template_content['extensions']
+    # %% MERGE
+    for setting in parsed_vsc_workspace_template_content['settings']:
+        parsed_vsc_workspace_content['settings'][setting] = parsed_vsc_workspace_template_content['settings'][setting]
 
+    parsed_vsc_workspace_content['extensions'] = parsed_vsc_workspace_template_content['extensions']
+else:
+    parsed_vsc_workspace_content = parsed_vsc_workspace_template_content
 
 #%%
-with open(f'{relative_path}.vscode\\{workspace_name}.code-workspace', 'w') as vsc_workspace_write:
+with open(target_workspace_file, 'w') as vsc_workspace_write:
     json.dump(parsed_vsc_workspace_content, vsc_workspace_write)
