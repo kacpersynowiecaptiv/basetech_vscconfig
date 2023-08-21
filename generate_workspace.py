@@ -14,7 +14,7 @@ workspace_name = parsed_settings['general']['workspace_name']
 relative_path = f"..\\msw\\{parsed_settings['general']['msw_relative_path']}"
 # %%
 call(["robocopy", f'{file_path}\\.vscode', f'{file_path}\\{relative_path}.vscode'])
-
+call(["robocopy", f'{file_path}', os.path.expandvars(f"%LocalAppData%\\clangd"), 'config.yaml'])
 # %%
 with open(f'{relative_path}.vscode\\code-workspace_template.json') as vsc_workspace_template:
     vsc_workspace_template_content = vsc_workspace_template.read()

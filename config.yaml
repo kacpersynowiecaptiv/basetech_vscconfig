@@ -1,0 +1,33 @@
+Diagnostics:
+  ClangTidy:
+    Add: [readability-non-const-parameter,
+          readability-magic-numbers,
+          readability-function-cognitive-complexity,
+          readability-const-return-type,
+          bugprone-assignment-in-if-condition,
+          bugprone-dynamic-static-initializers,
+          bugprone-macro-parentheses,
+          bugprone-multiple-statement-macro,
+          readability-avoid-const-params-in-decls,
+          readability-inconsistent-declaration-parameter-name,
+          bugprone-too-small-loop-variable,
+          readability-redundant-control-flow,
+          readability-suspicious-call-argument,
+          misc-unused-parameters,
+          performance-unnecessary-value-param,
+          readability-identifier-naming,
+          readability-simplify-boolean-expr,
+          bugprone-branch-clone,
+          bugprone-suspicious-missing-comma,
+          bugprone-redundant-branch-condition,
+          bugprone-switch-missing-default-case,
+          bugprone-misplaced-widening-cast,
+          bugprone-unused-return-value]
+    CheckOptions:
+      readability-identifier-naming.LocalVariableCase: lower_case
+      readability-identifier-naming.MemberCase: lower_case
+      readability-identifier-naming.GlobalVariableCase: Camel_Snake_Case
+      readability-identifier-naming.FunctionCase: Camel_Snake_Case
+      readability-identifier-naming.EnumConstantCase: UPPER_CASE
+      readability-identifier-naming.MacroDefinitionCase: UPPER_CASE
+      readability-identifier-naming.TypedefCase: Camel_Snake_Case
